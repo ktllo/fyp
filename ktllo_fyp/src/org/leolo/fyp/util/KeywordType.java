@@ -40,15 +40,21 @@ enum KeywordType {
     public static KeywordType identify(String str){
         for(int i=0;i<str.length();i++){
             char test = str.charAt(i);
-            if(  (test >= '\u0020' && test <= '\u007f') ||
-                 (test >= '\u00a0' && test <= '\u024f') ||
-                 (test >= '\u1e00' && test <= '\u1eff') ||
-                 (test >= '\u2c60' && test <= '\u2c7f') ){
-                //This character IS LATIN
-            }else{
-                return CJK;
+            if(identify(test)==CJK){
+                return  CJK;
             }
         }
         return LATIN;
     }
+    
+    public static KeywordType identify(char test){
+        if(  (test >= '\u0020' && test <= '\u007f') ||
+            (test >= '\u00a0' && test <= '\u024f') ||
+            (test >= '\u1e00' && test <= '\u1eff') ||
+            (test >= '\u2c60' && test <= '\u2c7f') ){
+            return LATIN;
+        }else{
+            return CJK;
+        }
+    }    
 }
