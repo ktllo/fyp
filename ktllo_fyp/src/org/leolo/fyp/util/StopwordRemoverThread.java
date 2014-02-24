@@ -26,19 +26,7 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
     
     @Override
     public void run(){
-        //Do some work to remove the stopword
-        do{
-            String curWord = this.nextWord();
-            if(KeywordType.identify(curWord) == KeywordType.LATIN){
-                if(Arrays.binarySearch(KeywordList.ENGLISH, curWord, String.CASE_INSENSITIVE_ORDER) >= 0){ 
-                    //Remove the stopword
-                    this.removeWord();
-                }
-            }else{
-                //Handle the non-english stopword, with different algroithm to handle them
-                //TODO: Develop an algroithm to handle this case
-            }
-        }while(!isEnd());
+        removeStopword();
         //Assume that the stopwords are removed
         String result = workspace.toString();
         WordCountThread wct = new WordCountThread(this, result);
@@ -68,11 +56,16 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
         this.wordCount = value;
     }
     
-    private String nextWord(){
-        //TODO: Fill in pre-process code
+    private CharacterBlock nextWord(){
+        //TODO: Fill in pre-process code\
+        CharacterType pervious = CharacterType.FIRST_CHARACTER;
         do{
             char currentChar = workspace.charAt(pointer++);
-            //TODO: Fill in actual identifying code.
+            //If it is a CJK, and pervious is LATIN, then, a word is formed
+            //If it is a LATIN, and pervious one is CJK, then, a word is formed
+            //If it is a NUMBER, it never create a new word.
+            //If it is a DELIMITER, it create a new word IF pervious character is LATIN OR NUMBER OR CJK
+            //If it is a FULLSTOP, it create a new word IF pervious character is LATIN OR CJK
         }while( pointer < workspace.length());
         return null;
     }
@@ -96,5 +89,30 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
             return true;
         }
         return false;
+    }
+    
+    public void removeStopword(){
+        //Do some work to remove the stopword
+        do{
+            CharacterBlock curWord = this.nextWord();
+            if(curWord.type == KeywordType.LATIN){
+                if(Arrays.binarySearch(KeywordList.ENGLISH, curWord.data, String.CASE_INSENSITIVE_ORDER) >= 0){ 
+                    //Remove the stopword
+                    this.removeWord();
+                }
+            }else{
+                //Handle the non-english stopword, with different algroithm to handle them
+                //TODO: Develop an algroithm to handle this case
+            }
+        }while(!isEnd());
+    }
+    
+    public String getString(){
+        return workspace.toString();
+    }
+    
+    class CharacterBlock{
+        public String data;
+        public KeywordType type;
     }
 }
