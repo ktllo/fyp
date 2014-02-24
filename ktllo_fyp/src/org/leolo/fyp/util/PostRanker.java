@@ -44,7 +44,7 @@ public class PostRanker implements WordCounterUser{
         kwsReturned = 0;
         kwsValue = 0;
         wctValue = -1;
-        StopwordRemoverResult dataWithoutStopword=null;
+        dataWithoutStopword=null;
         //Create Keyword Match Threads
         int[] breakPoint = new int[THREAD_COUNT + 1];
         for (int i = 0; i <= THREAD_COUNT; i++) {
