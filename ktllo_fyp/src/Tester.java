@@ -16,20 +16,20 @@ public class Tester {
 		System.out.println(Arrays.binarySearch(KeywordList.ENGLISH, "a", String.CASE_INSENSITIVE_ORDER));
 		
 		
-		for(int i=0;i<KeywordList.CHINESE.length;i++) {
-                    System.out.println(KeywordList.CHINESE[i]);
+		for(int i=0;i<KeywordList.ANOTHER.length;i++) {
+                    System.out.println(KeywordList.ANOTHER[i]);
                 }
-		Arrays.sort(KeywordList.CHINESE,String.CASE_INSENSITIVE_ORDER);
+		Arrays.sort(KeywordList.ANOTHER,String.CASE_INSENSITIVE_ORDER);
 		System.out.println("*****************************");
-		for(int i=0;i<KeywordList.CHINESE.length;i++) {
-                    System.out.println(KeywordList.CHINESE[i]);
+		for(int i=0;i<KeywordList.ANOTHER.length;i++) {
+                    System.out.println(KeywordList.ANOTHER[i]);
                 }
-		System.out.println(Arrays.binarySearch(KeywordList.CHINESE, "�����u", String.CASE_INSENSITIVE_ORDER));
-		System.out.println(Arrays.binarySearch(KeywordList.CHINESE, "���u��", String.CASE_INSENSITIVE_ORDER));
-		System.out.println(Arrays.binarySearch(KeywordList.CHINESE, "�|�P", String.CASE_INSENSITIVE_ORDER));
+		System.out.println(Arrays.binarySearch(KeywordList.ANOTHER, "片相", String.CASE_INSENSITIVE_ORDER));
+		System.out.println(Arrays.binarySearch(KeywordList.ANOTHER, "相片", String.CASE_INSENSITIVE_ORDER));
+		System.out.println(Arrays.binarySearch(KeywordList.ANOTHER, "片", String.CASE_INSENSITIVE_ORDER));
 		System.out.println("*****************************");
-		System.out.println(Arrays.binarySearch(KeywordList.CHINESE, "ab", String.CASE_INSENSITIVE_ORDER));
-		System.out.println(Arrays.binarySearch(KeywordList.ENGLISH, "�|�P", String.CASE_INSENSITIVE_ORDER));
+		System.out.println(Arrays.binarySearch(KeywordList.ANOTHER, "ab", String.CASE_INSENSITIVE_ORDER));
+		System.out.println(Arrays.binarySearch(KeywordList.ENGLISH, "相片", String.CASE_INSENSITIVE_ORDER));
 		
 	}
 }
