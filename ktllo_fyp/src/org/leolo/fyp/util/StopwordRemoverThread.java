@@ -57,17 +57,54 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
     }
     
     private CharacterBlock nextWord(){
-        //TODO: Fill in pre-process code\
+        //TODO: Fill in pre-process code
+        perviousPointer = pointer;
         CharacterType pervious = CharacterType.FIRST_CHARACTER;
+        boolean haveChar = false;
+        boolean wordFormed = false;
+        CharacterType type = null;
         do{
-            char currentChar = workspace.charAt(pointer++);
-            //If it is a CJK, and pervious is LATIN, then, a word is formed
-            //If it is a LATIN, and pervious one is CJK, then, a word is formed
-            //If it is a NUMBER, it never create a new word.
-            //If it is a DELIMITER, it create a new word IF pervious character is LATIN OR NUMBER OR CJK
-            //If it is a FULLSTOP, it create a new word IF pervious character is LATIN OR CJK
-        }while( pointer < workspace.length());
-        return null;
+            char currentChar = workspace.charAt(pointer);
+            type = CharacterType.identify(currentChar);
+            switch(type){
+                case NUMBER:
+                case FULLSTOP:
+                case DELIMITER:
+                    if(haveChar){
+                        wordFormed = true;
+                    }else{
+                        perviousPointer++;
+                    }
+                    break;
+                case LATIN:
+                    haveChar = true;
+                    if(pervious == CharacterType.CJK){
+                        wordFormed = true;
+                    }
+                    break;
+                case CJK:
+                    haveChar = true;
+                    if(pervious == CharacterType.LATIN){
+                        wordFormed = true;
+                    }
+            }
+            if(wordFormed){
+                if(type==CharacterType.CJK){
+                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.CJK);
+                }else{
+                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.LATIN);
+                }
+            }
+            pervious = type;
+            if(++pointer >= workspace.length()){
+                if(type==CharacterType.CJK){
+                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.CJK);
+                }else{
+                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.LATIN);
+                }
+            }
+        }while( true );
+        //return null;
     }
     
     private void removeWord(){
@@ -95,6 +132,7 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
         //Do some work to remove the stopword
         do{
             CharacterBlock curWord = this.nextWord();
+            System.out.println(curWord.data);
             if(curWord.type == KeywordType.LATIN){
                 if(Arrays.binarySearch(KeywordList.ENGLISH, curWord.data, String.CASE_INSENSITIVE_ORDER) >= 0){ 
                     //Remove the stopword
@@ -114,5 +152,10 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
     class CharacterBlock{
         public String data;
         public KeywordType type;
+        
+        public CharacterBlock(String data,KeywordType type){
+            this.data=data;
+            this.type = type;
+        }
     }
 }
