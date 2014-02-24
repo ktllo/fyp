@@ -7,10 +7,10 @@ public class KeywordList {
 		"about",
 		"Yes",
 		"ZZZZ"};
-	public static final String [] CHINESE = {"¶Àª©","¤@¬P´Á","¤@¦¸","ªº¦¬¤u","¦aÂI¡I¥¿"};
+	public static final String [] ANOTHER = {"ç›¸ç‰‡","å½±ç‰‡"};
 	
-	public static final String ANOTHER [][]={ {},
-					{"¶À","ª©","ªº"},//Length 1
-					{"¶Àª©","¬P´Á","¤@¦¸"}//Length 2
+	public static final String  CHINESE [][]={ {},
+					{"ç›¸","ç‰‡","å½±"},//Length 1
+					{"ç›¸ç‰‡"}//Length 2
 					}; 
 }
