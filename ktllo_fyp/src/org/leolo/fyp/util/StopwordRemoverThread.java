@@ -5,7 +5,7 @@
 package org.leolo.fyp.util;
 
 import java.util.Arrays;
-import org.leolo.fyp.KeywordList;
+import org.leolo.fyp.StopwordList;
 
 /**
  *
@@ -137,7 +137,7 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
             System.out.print(curWord.data);
             System.out.print(" is type "+curWord.type.name());
             if(curWord.type == KeywordType.LATIN){
-                if(Arrays.binarySearch(KeywordList.ENGLISH, curWord.data, String.CASE_INSENSITIVE_ORDER) >= 0){ 
+                if(Arrays.binarySearch(StopwordList.ENGLISH, curWord.data, String.CASE_INSENSITIVE_ORDER) >= 0){ 
                     //Remove the stopword
                     this.removeWord();
                 }
