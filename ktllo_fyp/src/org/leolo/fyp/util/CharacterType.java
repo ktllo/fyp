@@ -21,7 +21,8 @@ package org.leolo.fyp.util;
      * <li>0009</li>
      * <li>000A</li>
      * <li>000D</li>
-     * <li>0020-002C</li>
+     * <li>0020-0026</li>
+     * <li>0028-002C</li>
      * <li>002F</li>
      * <li>003A-0040</li>
      * <li>005B-005F</li>
@@ -30,8 +31,13 @@ package org.leolo.fyp.util;
      * <li>2018-2019(Paired Quotation mark)</li>
      * <li>201C-201D(Paired Quotation mark)</li>
      * </ul>
-     */ DELIMITER, /**
-     * A <b>LATIN</b> character is character in following range but not fit into <b>DELIMITER</b>,<b>FULLSTOP</b> or <b>NUMBER</b> type.
+     */ DELIMITER,
+     /**
+      * A <b>UNBREAK</b> character is either a hyphen(-) or a single quote(').
+      */
+        UNBREAK,
+     /**
+     * A <b>LATIN</b> character is character in following range but not fit into <b>DELIMITER</b>,<b>UNBREAK</b>,<b>FULLSTOP</b> or <b>NUMBER</b> type.
      * <ul>
      * <li>0020-007F(Basic Latin)</li>
      * <li>00A0-00FF(Latin 1 Supplement)</li>
@@ -50,6 +56,9 @@ package org.leolo.fyp.util;
      * @return Class the character is in
      */
     public static CharacterType identify(char c) {
+        if ( c == '-' || c == '\'' ){
+            return UNBREAK;
+        }
         if (c >= '\u0030' && c <= '\u0039') {
             return NUMBER;
         }
