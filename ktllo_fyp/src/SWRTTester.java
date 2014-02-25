@@ -12,6 +12,7 @@ public class SWRTTester {
         String testString="This is a test-message. Is it a good idea. You couldn\'t disagree with me.";
         StopwordRemoverThread swrt = new StopwordRemoverThread(null,testString);
         System.out.println(testString);
+        System.out.println("**************************************************");
         swrt.removeStopword();
         System.out.println(swrt.getString());
         
