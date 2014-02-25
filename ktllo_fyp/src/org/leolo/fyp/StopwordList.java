@@ -623,7 +623,7 @@ public class StopwordList {
 		"yourself",
 		"yourselves",
 		"z",
-		"zero"};
+		"zero","zoo"};
 	/**
          * @deprecated Used in demo earlier.
          */
