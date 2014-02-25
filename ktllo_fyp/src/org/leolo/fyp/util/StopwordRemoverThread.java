@@ -109,7 +109,7 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
     
     private void removeWord(){
         this.workspace.delete(this.perviousPointer, pointer);
-        System.out.println("Removing "+perviousPointer+" to "+pointer);
+        //System.out.println("Removing "+perviousPointer+" to "+pointer);
         pointer=perviousPointer;
     }
     
@@ -117,7 +117,7 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
         if(start >= end) {
             throw new java.lang.IllegalArgumentException("end index must bigger than the start index.");
         }
-        System.out.println("Removing "+start+" to "+end);
+        //System.out.println("Removing "+start+" to "+end);
         this.workspace.delete(start, end);
         pointer-=(end-start);
     }
@@ -134,8 +134,8 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
         //Do some work to remove the stopword
         do{
             CharacterBlock curWord = this.nextWord();
-            System.out.print(curWord.data);
-            System.out.print(" is type "+curWord.type.name());
+            //System.out.print(curWord.data);
+            //System.out.print(" is type "+curWord.type.name());
             if(curWord.type == KeywordType.LATIN){
                 if(Arrays.binarySearch(StopwordList.ENGLISH, curWord.data, String.CASE_INSENSITIVE_ORDER) >= 0){ 
                     //Remove the stopword
@@ -145,7 +145,7 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
                 //Handle the non-english stopword, with different algroithm to handle them
                 //TODO: Develop an algroithm to handle this case
             }
-            System.out.println();
+            //System.out.println();
         }while(!isEnd());
     }
     
