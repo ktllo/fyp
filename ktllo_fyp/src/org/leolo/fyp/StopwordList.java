@@ -411,6 +411,7 @@ public class StopwordList {
 		"regards",
 		"relatively",
 		"respectively",
+                "restaurant",
 		"right",
 		"s",
 		"said",
