@@ -226,7 +226,6 @@ public class StopwordList {
                 "help",
                 "hence",
                 "her",
-                "her",
                 "here",
                 "hereafter",
                 "hereby",
