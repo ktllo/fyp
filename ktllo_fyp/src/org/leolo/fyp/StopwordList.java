@@ -10,16 +10,16 @@ public class StopwordList {
      * A list of stopword in English. This list MUST be sorted. The entry listed here
      * are case insensitive.
      */
-	public static final String [] ENGLISH = {"a",
+	public static final String [] ENGLISH = {
+            //checked by David
+            "a",
                 "able",
                 "about",
                 "above",
                 "according",
                 "accordingly",
-                "across",
-                "across",
-                "actually",
-                "actually",
+                "across",//deleted one repeated
+                "actually",//deleted one repeated
                 "after",
                 "afterwards",
                 "again",
