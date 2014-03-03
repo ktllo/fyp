@@ -17,11 +17,21 @@ public class DataFetcher {
         String line = br.readLine();
         Vector<WordList> list = new Vector<WordList>();
         while(line != null){
+            System.out.println(line);
+            if(line.contains("#")){
+                //Part of this line is comments
+                int hashPos = line.indexOf("#");
+                if(hashPos == 0){
+                    line = "";//The line should be empty
+                }else{
+                    line = line.substring(0, hashPos);
+                }
+            }
             if(line.length() == 0) {
                 line = br.readLine();
                 continue;
             }
-            //System.out.println(line);
+            System.out.println(line);
             int len = line.length();
             boolean offered = false;
             //Check is there any WordList w/ correct length
