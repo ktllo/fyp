@@ -42,6 +42,7 @@ public class WordCounterFrontend implements WordCounterUser{
                }
                br.close();
                WordCountThread wct = new WordCountThread(this,sb.toString());
+               wordCount = -1;//Reset ther value
                wct.start();
                while(true){
                    if(wordCount > 0){
