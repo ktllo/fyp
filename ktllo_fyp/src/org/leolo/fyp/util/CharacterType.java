@@ -47,8 +47,18 @@ package org.leolo.fyp.util;
      * <li>2C60-2C7F(Latin Extended-C)</li>
      * </ul>
      */ LATIN, /**
-     * Character does not fit into any other type is <b>CJK</b>
-     */ CJK;
+      * A <b>CJK</b> character is character within following range:
+      * <ul>
+      * <li>31C0-31EF(中日韓筆畫,	CJK Strokes)</li>
+      * <li>31F0-31FF(日文片假名語音擴充功能,Katakana Phonetic Extensions)</li>
+      * <li>3300-33FF(中日韓相容,CJK Compatibility)</li>
+      * <li>3400-4DBF(中日韓統一表意文字擴充功能A,CJK Unified Ideographs Extension A)</li>
+      * </ul>
+     */ CJK,
+     /** If a character does not belongs to any type, it will belongs to 
+      * <b>OTHER</b> type, <i>i.e.</i> this is a catch-all type
+      */
+        OTHER;
 
     /**
      * Identify which class the character is in.
@@ -71,7 +81,10 @@ package org.leolo.fyp.util;
         if ((c >= '\u0020' && c <= '\u007f') || (c >= '\u00a0' && c <= '\u024f') || (c >= '\u1e00' && c <= '\u1eff') || (c >= '\u2c60' && c <= '\u2c7f')) {
             return LATIN;
         }
-        return CJK;
+        if ((c >= '\u31c0' && c <= '\u4dbf')){
+            return CJK;
+        }
+        return OTHER;
     }
     
 }
