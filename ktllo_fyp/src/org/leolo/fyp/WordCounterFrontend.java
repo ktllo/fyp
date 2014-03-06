@@ -21,6 +21,7 @@ public class WordCounterFrontend implements WordCounterUser{
         }catch(Throwable t){
             t.printStackTrace();
             JOptionPane.showMessageDialog(null, t.toString());
+            System.exit(1);
         }
     }
     
@@ -57,6 +58,7 @@ public class WordCounterFrontend implements WordCounterUser{
                 break;
             }
         }
+        System.exit(0);
         
     }
     
