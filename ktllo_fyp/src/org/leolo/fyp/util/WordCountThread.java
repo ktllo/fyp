@@ -9,7 +9,7 @@ package org.leolo.fyp.util;
  *
  * @author leolo
  */
-class WordCountThread extends Thread {
+public class WordCountThread extends Thread {
     final WordCounterUser ranker;
     String data;
     
