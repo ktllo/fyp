@@ -89,18 +89,18 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
                     }
             }
             if(wordFormed){
-                if(pervious==CharacterType.CJK){
-                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.CJK);
+                if(CharacterType.identify(workspace.charAt(perviousPointer))==CharacterType.CJK){
+                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.CJK,perviousPointer,pointer);
                 }else{
-                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.LATIN);
+                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.LATIN,perviousPointer,pointer);
                 }
             }
             pervious = type;
             if(++pointer >= workspace.length()){
-                if(type==CharacterType.CJK){
-                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.CJK);
+                if(CharacterType.identify(workspace.charAt(perviousPointer))==CharacterType.CJK){
+                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.CJK,perviousPointer,pointer);
                 }else{
-                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.LATIN);
+                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.LATIN,perviousPointer,pointer);
                 }
             }
         }while( true );
@@ -113,13 +113,15 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
         pointer=perviousPointer;
     }
     
-    private void removeCharacter(int start,int end){
+    private void removeCharacter(CharacterBlock block,int start,int end){
         if(start >= end) {
             throw new java.lang.IllegalArgumentException("end index must bigger than the start index.");
         }
-        //System.out.println("Removing "+start+" to "+end);
+        System.out.println("Removing "+start+" to "+end);
         this.workspace.delete(start, end);
+        this.workspace.insert(start, ' ');
         pointer-=(end-start);
+        block.end -= (end-start+1);
     }
     
     //Check is finish scaning the StringBuffer
@@ -135,7 +137,7 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
         do{
             CharacterBlock curWord = this.nextWord();
             //System.out.print(curWord.data);
-            //System.out.print(" is type "+curWord.type.name());
+            //System.out.println(" is type "+curWord.type.name());
             if(curWord.type == KeywordType.LATIN){
                 if(Arrays.binarySearch(StopwordList.ENGLISH, curWord.data, String.CASE_INSENSITIVE_ORDER) >= 0){ 
                     //Remove the stopword
@@ -143,7 +145,19 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
                 }
             }else{
                 //Handle the non-english stopword, with different algroithm to handle them
-                //TODO: Develop an algroithm to handle this case
+                System.out.println(curWord.data);
+                for(int i=StopwordList.CHINESE.length-1;i>0;i--){
+                    //Checking stopword with length i
+                    for(int j=curWord.start;j<=(curWord.end-i);j++){
+                        String checkTarget = workspace.substring(j, j+i);
+                        System.out.println(checkTarget);
+                        if(Arrays.binarySearch(StopwordList.CHINESE[i], checkTarget,String.CASE_INSENSITIVE_ORDER)>=0){
+                            System.out.println("Remove Required");
+                            removeCharacter(curWord,j,j+i);
+                            System.out.println(workspace);
+                        }
+                    }
+                }
             }
             //System.out.println();
         }while(!isEnd());
@@ -156,10 +170,13 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
     class CharacterBlock{
         public String data;
         public KeywordType type;
+        public int start,end;
         
-        public CharacterBlock(String data,KeywordType type){
+        public CharacterBlock(String data,KeywordType type,int start,int end){
             this.data=data;
             this.type = type;
+            this.start=start;
+            this.end=end;
         }
     }
 }
