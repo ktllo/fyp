@@ -68,7 +68,7 @@ package org.leolo.fyp.util;
      * @return Class the character is in
      */
     public static CharacterType identify(char c) {
-        System.out.println(Integer.toHexString(c));
+        //System.out.println(Integer.toHexString(c));
         if ( c == '-' || c == '\'' ){
             return UNBREAK;
         }
