@@ -53,6 +53,8 @@ package org.leolo.fyp.util;
       * <li>31F0-31FF(日文片假名語音擴充功能,Katakana Phonetic Extensions)</li>
       * <li>3300-33FF(中日韓相容,CJK Compatibility)</li>
       * <li>3400-4DBF(中日韓統一表意文字擴充功能A,CJK Unified Ideographs Extension A)</li>
+      * <li>4DC0-4DFF(易經六十四卦符號,Yijing Hexagrams Symbols</li>
+      * <l>4E00-9FFF(中日韓統一表意文字,CJK Unified Ideographs)</li>
       * </ul>
      */ CJK,
      /** If a character does not belongs to any type, it will belongs to 
@@ -66,6 +68,7 @@ package org.leolo.fyp.util;
      * @return Class the character is in
      */
     public static CharacterType identify(char c) {
+        System.out.println(Integer.toHexString(c));
         if ( c == '-' || c == '\'' ){
             return UNBREAK;
         }
@@ -91,7 +94,7 @@ package org.leolo.fyp.util;
         if ((c >= '\u0020' && c <= '\u007f') || (c >= '\u00a0' && c <= '\u024f') || (c >= '\u1e00' && c <= '\u1eff') || (c >= '\u2c60' && c <= '\u2c7f')) {
             return LATIN;
         }
-        if ((c >= '\u31c0' && c <= '\u4dbf')){
+        if ((c >= '\u31c0' && c <= '\u9fff')){
             return CJK;
         }
         return OTHER;
