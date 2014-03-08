@@ -7,6 +7,12 @@
 error:
 1.) phrase "our's" not counted as a word
 
+======Chinese word count=======
+
+>>>>I put all word phrases that I've tested into test_chinese.txt under the default package<<
+
+no problems so far, just that we need to remember to set the encoding method as UTF-8, but not ANSI
+
 
 *******************************************************************************
 Issue fixed. 
