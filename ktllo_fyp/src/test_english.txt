@@ -1,0 +1,37 @@
+
+********************************************************************
+The following words were tested on 8/3/2014,
+if you want to test more words, plz put them above the *** line
+
+hello
+hello=hello
+hello?hello
+hello,hello
+hello.hello
+hello<hello>hello
+hello[hello]hello
+hello/hello
+hello"hello
+hello:hello
+hello;hello
+hello-hello 
+hello(hello)hello
+hello!hello
+hello~hello
+hello{hello}hello
+hello*hello
+hello&hello
+I'm
+let's
+ours'
+hello+hello
+hello=hello
+hello^hello
+hello#hello
+hello_hello
+hello\hello
+hello|hello
+hello@hello
+hello%hello
+hello~hello
+hello#hello

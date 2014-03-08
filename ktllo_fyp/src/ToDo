@@ -1,3 +1,13 @@
+8/3/2014 from Law
+
+======English word count========
+
+>>>>I put all word phrases that I've tested into test_english.txt under the default package<<
+
+error:
+1.) phrase "our's" not counted as a word
+
+
 *******************************************************************************
 Issue fixed. 
 Below marked any errors/concerned matters found from word count program
