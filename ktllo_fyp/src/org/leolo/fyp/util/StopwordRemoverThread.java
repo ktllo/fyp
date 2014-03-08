@@ -27,6 +27,7 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
     @Override
     public void run(){
         removeStopword();
+        //System.out.println(">>WCT<<");
         //Assume that the stopwords are removed
         String result = workspace.toString();
         WordCountThread wct = new WordCountThread(this, result);
@@ -46,6 +47,7 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
         }
         //Everything is ready
         synchronized(ranker){
+            //System.out.println(">>DONE<<");
             ranker.swrtReport(new StopwordRemoverResult(result,this.wordCount));
             ranker.notify();
         }
@@ -53,6 +55,7 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
     
     @Override
     public void wctReport(int value) {
+        //System.out.println("<<WCT>>wctReport");
         this.wordCount = value;
     }
     
@@ -97,10 +100,14 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
             }
             pervious = type;
             if(++pointer >= workspace.length()){
-                if(CharacterType.identify(workspace.charAt(perviousPointer))==CharacterType.CJK){
-                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.CJK,perviousPointer,pointer);
-                }else{
-                    return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.LATIN,perviousPointer,pointer);
+                try{
+                    if(CharacterType.identify(workspace.charAt(perviousPointer))==CharacterType.CJK){
+                        return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.CJK,perviousPointer,pointer);
+                    }else{
+                        return new CharacterBlock(workspace.substring(perviousPointer, pointer),KeywordType.LATIN,perviousPointer,pointer);
+                    }
+                }catch(StringIndexOutOfBoundsException sioobe){
+                    return null;
                 }
             }
         }while( true );
@@ -138,6 +145,9 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
             CharacterBlock curWord = this.nextWord();
             //System.out.print(curWord.data);
             //System.out.println(" is type "+curWord.type.name());
+            if(curWord == null){
+                return;
+            }
             if(curWord.type == KeywordType.LATIN){
                 if(Arrays.binarySearch(StopwordList.ENGLISH, curWord.data, String.CASE_INSENSITIVE_ORDER) >= 0){ 
                     //Remove the stopword
@@ -150,11 +160,11 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
                     //Checking stopword with length i
                     for(int j=curWord.start;j<=(curWord.end-i);j++){
                         String checkTarget = workspace.substring(j, j+i);
-                        System.out.println(checkTarget);
+                        //System.out.println(checkTarget);
                         if(Arrays.binarySearch(StopwordList.CHINESE[i], checkTarget,String.CASE_INSENSITIVE_ORDER)>=0){
-                            System.out.println("Remove Required");
+                            //System.out.println("Remove Required");
                             removeCharacter(curWord,j,j+i);
-                            System.out.println(workspace);
+                            //System.out.println(workspace);
                         }
                     }
                 }

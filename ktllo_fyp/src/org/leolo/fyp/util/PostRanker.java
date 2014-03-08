@@ -56,6 +56,8 @@ public class PostRanker implements WordCounterUser{
         }
         WordCountThread wct = new WordCountThread(this, data);
         wct.start();
+        StopwordRemoverThread swrt = new StopwordRemoverThread(this,data);
+        swrt.start();
         waitForResult();
         int adjust = 0;
         if(kwsValue != 0) {
@@ -63,7 +65,7 @@ public class PostRanker implements WordCounterUser{
                 adjust = kwsValue * -23;
             }
         }
-        return this.kwsValue * 25 + this.wctValue + adjust;
+        return this.kwsValue * 250 + this.wctValue + adjust + 10 * this.dataWithoutStopword.getWordCount();
     }
     
     //To make the things more clear.
