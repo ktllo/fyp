@@ -54,7 +54,13 @@ package org.leolo.fyp.util;
       * <li>3300-33FF(中日韓相容,CJK Compatibility)</li>
       * <li>3400-4DBF(中日韓統一表意文字擴充功能A,CJK Unified Ideographs Extension A)</li>
       * <li>4DC0-4DFF(易經六十四卦符號,Yijing Hexagrams Symbols</li>
-      * <l>4E00-9FFF(中日韓統一表意文字,CJK Unified Ideographs)</li>
+      * <li>4E00-9FFF(中日韓統一表意文字,CJK Unified Ideographs)</li>
+      * <li>E000-F8FF(PUA, mainly HKSCS)</li>
+      * <li>U+20000-U+2A6DF(中日韓統一表意文字擴展B區)</li>
+      * <li> U+2A700-U+2B73F(中日韓統一表意文字擴展C區)</li>
+      * <li> U+2B740-U+2B81F(中日韓統一表意文字擴展D區)</li>
+      * <li>U+2B820-U+2F7FF(中日韓統一表意文字擴展E區)</li>
+      * <li> U+2F800-U+2FA1F(中日韓兼容表意文字增補)</li>
       * </ul>
      */ CJK,
      /** If a character does not belongs to any type, it will belongs to 
@@ -95,7 +101,7 @@ package org.leolo.fyp.util;
         if ((c >= '\u0020' && c <= '\u007f') || (c >= '\u00a0' && c <= '\u024f') || (c >= '\u1e00' && c <= '\u1eff') || (c >= '\u2c60' && c <= '\u2c7f')) {
             return LATIN;
         }
-        if ((c >= '\u31c0' && c <= '\u9fff')){
+        if ((c >= '\u31c0' && c <= '\u9fff') || (c >= '\ue000' && c <= '\uf8ff')){//Deal with code with  within BMP
             return CJK;
         }
         return OTHER;
