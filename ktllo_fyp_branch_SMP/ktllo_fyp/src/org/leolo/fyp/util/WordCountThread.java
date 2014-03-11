@@ -26,10 +26,17 @@ public class WordCountThread extends Thread {
     public void run() {
         CharacterType last = CharacterType.FIRST_CHARACTER;
         int count = 0;
+        char lowSurrogate = 0x00;
         for(int i=0;i<data.length();i++){
             char next = data.charAt(i);
-            
-            final CharacterType type = CharacterType.identify(next);//Avoid accidental overwrite
+            CharacterType type;
+            if(Character.isHighSurrogate(next)){
+                lowSurrogate = data.charAt(++i);
+                type = CharacterType.identify(next, lowSurrogate);
+            }else{
+                type = CharacterType.identify(next);
+            }
+             
             System.out.println(type.name());
             //If it is CJK, the character itself is a WORD, reguardless what kind is last character
             //If it is a LATIN OR NUMBER, it never create a new word.
