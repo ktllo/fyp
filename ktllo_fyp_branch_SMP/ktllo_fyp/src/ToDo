@@ -1,0 +1,22 @@
+8/3/2014 from Law
+
+======English word count========
+
+>>>>I put all word phrases that I've tested into test_english.txt under the default package<<
+
+error:
+1.) phrase "our's" not counted as a word(Leo:Cannot reproduce)
+
+======Chinese word count=======
+
+>>>>I put all word phrases that I've tested into test_chinese.txt under the default package<<
+
+no problems so far, just that we need to remember to set the encoding method as UTF-8, but not ANSI
+
+
+*******************************************************************************
+Issue fixed. 
+Below marked any errors/concerned matters found from word count program
+
+1.) hello/hello = 1 word, but should be 2 words
+
