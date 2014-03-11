@@ -71,14 +71,16 @@ package org.leolo.fyp.util;
         OTHER;
 
     /**
-     * Identify which class the character is in.
+     * Identify which class the character is in. Can deal with character within BMP only.
+     * Will return <b>HIGH_ORDER_BYTES</b> if the character is not within BMP.
      * @param c Character going to be identified
      * @return Class the character is in
      */
     public static CharacterType identify(char c) {
         System.out.println(Integer.toHexString(c));
-        if(Character.isHighSurrogate(c))
+        if(Character.isHighSurrogate(c)){
             return HIGH_ORDER_BYTES;
+        }
         if ( c == '-' || c == '\'' ){
             return UNBREAK;
         }
@@ -111,4 +113,33 @@ package org.leolo.fyp.util;
         return OTHER;
     }
     
+    /**
+     * Identify which class the character is in. ONLY handle those case NOT within 
+     * BMP range.
+     * @param high - the high surrogate bytes, i.e. ,leading-surrogate code unit
+     * @param low - the next character
+     * @return Class the character is in
+     */
+    public static CharacterType identify(char high,char low){
+       if(!Character.isHighSurrogate(high)){
+           throw new IllegalArgumentException("high MUST have high surrogate");
+       }
+       int codepoint = Character.toCodePoint(high, low);
+       /* Recall CJK range notwithin BMP 
+        * <li>U+20000-U+2A6DF(中日韓統一表意文字擴展B區)</li>
+        * <li> U+2A700-U+2B73F(中日韓統一表意文字擴展C區)</li>
+        * <li> U+2B740-U+2B81F(中日韓統一表意文字擴展D區)</li>
+        * <li>U+2B820-U+2F7FF(中日韓統一表意文字擴展E區)</li>
+        * <li> U+2F800-U+2FA1F(中日韓兼容表意文字增補)</li>
+        */
+       if( (codepoint >= 0x20000 && codepoint <= 0x2a6df) ||
+               (codepoint >= 0x2a700 && codepoint <= 0x2b73f) ||
+               (codepoint >= 0x2b740 && codepoint <= 0x2b81f) ||
+               (codepoint >= 0x2b820 && codepoint <= 0x2f7ff) ||
+               (codepoint >= 0x2f800 && codepoint <= 0x2fa1f) 
+         ){
+           return CJK;
+       }
+        return OTHER;
+    }
 }
