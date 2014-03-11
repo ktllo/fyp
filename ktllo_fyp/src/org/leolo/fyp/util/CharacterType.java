@@ -19,8 +19,6 @@ package org.leolo.fyp.util;
      * The following character is <b>DELIMITER</b>
      * <ul>
      * <li>0009</li>
-     * <li>000A</li>
-     * <li>000D</li>
      * <li>0020-0026</li>
      * <li>0028-002C</li>
      * <li>002F</li>
@@ -32,6 +30,8 @@ package org.leolo.fyp.util;
      * <li>201C-201D(Paired Quotation mark)</li>
      * </ul>
      */ DELIMITER,
+     /** <b>NEW_LINE</b> is either 0x0A or 0x0D */
+        NEW_LINE,
      /**
       * A <b>UNBREAK</b> character is either a hyphen(-) or a single quote(').
       */
@@ -68,7 +68,7 @@ package org.leolo.fyp.util;
      * @return Class the character is in
      */
     public static CharacterType identify(char c) {
-        //System.out.println(Integer.toHexString(c));
+        System.out.println(Integer.toHexString(c));
         if ( c == '-' || c == '\'' ){
             return UNBREAK;
         }
@@ -78,9 +78,7 @@ package org.leolo.fyp.util;
         if (c == '\u002e') {
             return FULLSTOP;
         }
-        if ((c == '\u0009')
-                || (c == '\n')                          //New Line
-                || (c == '\r')                          //New Line
+        if ((c == '\u0009')                         //New Line
                 || (c == '/')                      // Forward Slash
                 || (c >= '\u0020' && c <= '\u002C')
                 || (c >= '\u003A' && c <= '\u0040')
@@ -90,6 +88,9 @@ package org.leolo.fyp.util;
                 || (c >= '\u201C' && c <= '\u201D')
                 || (c == '\u00a0')) {
             return DELIMITER;
+        }
+        if ((c == '\n') || (c == '\r') ){
+            return NEW_LINE;
         }
         if ((c >= '\u0020' && c <= '\u007f') || (c >= '\u00a0' && c <= '\u024f') || (c >= '\u1e00' && c <= '\u1eff') || (c >= '\u2c60' && c <= '\u2c7f')) {
             return LATIN;

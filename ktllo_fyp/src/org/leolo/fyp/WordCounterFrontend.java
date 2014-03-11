@@ -29,6 +29,7 @@ public class WordCounterFrontend implements WordCounterUser{
     
     public void run() throws Throwable{
         JFileChooser chooser = new JFileChooser();
+        JOptionPane.showMessageDialog(null,"Please use UTF-8 encoding for the file contains CHINESE.");
         while(true){
             int returnVal = chooser.showOpenDialog(null);
             if(returnVal == JFileChooser.APPROVE_OPTION) {
