@@ -63,9 +63,11 @@ package org.leolo.fyp.util;
       * <li> U+2F800-U+2FA1F(中日韓兼容表意文字增補)</li>
       * </ul>
      */ CJK,
+        HIGH_ORDER_BYTES,
      /** If a character does not belongs to any type, it will belongs to 
       * <b>OTHER</b> type, <i>i.e.</i> this is a catch-all type
       */
+        
         OTHER;
 
     /**
@@ -75,6 +77,8 @@ package org.leolo.fyp.util;
      */
     public static CharacterType identify(char c) {
         System.out.println(Integer.toHexString(c));
+        if(Character.isHighSurrogate(c))
+            return HIGH_ORDER_BYTES;
         if ( c == '-' || c == '\'' ){
             return UNBREAK;
         }
