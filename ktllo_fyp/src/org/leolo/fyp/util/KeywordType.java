@@ -8,7 +8,7 @@ package org.leolo.fyp.util;
  * Type of keyword to decide should the keyword comparing be case sensitive or not.
  * @author leolo
  */
-enum KeywordType {
+public enum KeywordType {
     /**
      * A keyword is said to be in LATIN type iff all character in the keyword
      * is within the following range.
