@@ -29,7 +29,7 @@ public class FindWord {
     private void run() {
         
         //Build a data struct to keep the record
-        //For each port do
+        //For each post do
         ////Read in the post
         ////Remove the stopword
         ////For each word do
@@ -89,7 +89,7 @@ public class FindWord {
     }
 }
 
-class Pair {
+class Pair implements java.lang.Comparable<Pair>{
 
     private String key;
     private int value = 0;
@@ -108,5 +108,10 @@ class Pair {
 
     public boolean isMatch(String target) {
         return key.equalsIgnoreCase(target);
+    }
+
+    @Override
+    public int compareTo(Pair t) {
+        return Integer.compare(value, t.value);
     }
 }
