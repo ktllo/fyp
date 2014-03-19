@@ -4,12 +4,11 @@
  */
 package org.leolo.fyp.tmp;
 
+import java.util.*;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.leolo.fyp.util.CharacterType;
-import static org.leolo.fyp.util.CharacterType.CJK;
-import static org.leolo.fyp.util.CharacterType.DELIMITER;
-import static org.leolo.fyp.util.CharacterType.FULLSTOP;
-import static org.leolo.fyp.util.CharacterType.LATIN;
-import static org.leolo.fyp.util.CharacterType.NUMBER;
 import org.leolo.fyp.util.KeywordType;
 import org.leolo.fyp.util.StopwordRemoverThread;
 
@@ -23,19 +22,70 @@ public class FindWord {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new FindWord().run();
+        try {
+            new FindWord().run();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FindWord.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    private void run() {
+    private void run() throws ClassNotFoundException{
+        Queue<String> postList = new LinkedList<String>();
+        Vector<Pair> list = new Vector<Pair>();
+        try {
+            //Make a DB connection and get ALL post seems to be in English
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } catch (InstantiationException ex) {
+            ex.printStackTrace();
+            System.exit(1);
+        } catch (IllegalAccessException ex) {
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        try{
+            Connection conn = DriverManager.getConnection("jdbc:mysql://csz908.cse.ust.hk/label", "openrice", "openrice1129");
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT content FROM label.comment WHERE content REGEXP '^[0-9A-Za-z\\ ]{20}';");
+            while(result.next()){
+                postList.add(result.getString(1));
+            }
+            conn.close();
+        } catch(SQLException sqle){
+            sqle.printStackTrace();
+            System.exit(1);
+        }
         
-        //Build a data struct to keep the record
-        //For each post do
-        ////Read in the post
-        ////Remove the stopword
-        ////For each word do
-        //////Update the record
+        while(!postList.isEmpty()){
+            workspace = postList.remove();
+            StopwordRemoverThread srt = new StopwordRemoverThread(null,workspace);
+            srt.removeStopword();
+            workspace = srt.getString();
+            pointer = perviousPointer = 0;
+            while(true){
+                String word = this.nextWord();
+                if(word == null)
+                    break;
+                Pair p = null;
+                for(int i=0;i<list.size();i++){
+                    if(list.get(i).isMatch(word)){
+                        p = list.get(i);
+                        break;
+                    }
+                }
+               if( p == null ){
+                   p = new Pair(word);
+                   list.add(p);
+               }
+               p.matchKey();
+            }
+        }
         //Pick up the most common words
+        Collections.sort(list);
         //Print the result to the console
+        for(int i=0;i<list.size()&&i<30;i++){
+            System.out.println(""+(i+1)+":Count="+list.get(i).getValue()+";word="+list.get(i).getKey());
+        }
+        System.out.println(list.size());
     }
     private int pointer = 0;//Next character to be scan
     private String workspace;
@@ -49,6 +99,7 @@ public class FindWord {
         boolean wordFormed = false;
         CharacterType type = null;
         do {
+            if(pointer >= workspace.length() ) return null;
             char currentChar = workspace.charAt(pointer);
             type = CharacterType.identify(currentChar);
             switch (type) {
@@ -112,6 +163,10 @@ class Pair implements java.lang.Comparable<Pair>{
 
     @Override
     public int compareTo(Pair t) {
-        return Integer.compare(value, t.value);
+        return Integer.compare(t.value, value);
+    }
+   
+    public String getKey(){
+        return this.key;
     }
 }
