@@ -73,6 +73,7 @@ public class StopwordRemoverThread extends Thread implements WordCounterUser{
                 case NUMBER:
                 case FULLSTOP:
                 case DELIMITER:
+                case NEW_LINE:
                     if(haveChar){
                         wordFormed = true;
                     }else{
