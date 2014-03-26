@@ -65,6 +65,7 @@ public class FindWord {
                 String word = this.nextWord();
                 if(word == null)
                     break;
+                if(word.length() ==0) continue;
                 Pair p = null;
                 for(int i=0;i<list.size();i++){
                     if(list.get(i).isMatch(word)){
@@ -82,8 +83,10 @@ public class FindWord {
         //Pick up the most common words
         Collections.sort(list);
         //Print the result to the console
-        for(int i=0;i<list.size()&&i<30;i++){
-            System.out.println(""+(i+1)+":Count="+list.get(i).getValue()+";word="+list.get(i).getKey());
+        int threshold = list.get(list.size()/16).getValue();
+        for(int i=0;i<list.size();i++){
+            if(list.get(i).getValue() < threshold) break;
+            System.out.println(""+i+":Count="+list.get(i).getValue()+";word="+list.get(i).getKey());
         }
         System.out.println(list.size());
     }
@@ -106,6 +109,7 @@ public class FindWord {
                 case NUMBER:
                 case FULLSTOP:
                 case DELIMITER:
+                case NEW_LINE:
                     if (haveChar) {
                         wordFormed = true;
                     } else {
