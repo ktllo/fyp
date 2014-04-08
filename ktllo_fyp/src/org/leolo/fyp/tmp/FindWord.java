@@ -43,9 +43,9 @@ public class FindWord {
             System.exit(1);
         }
         try{
-            Connection conn = DriverManager.getConnection("jdbc:mysql://csz908.cse.ust.hk/label", "openrice", "openrice1129");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://home.leolo.org/label", "label", "label");
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT content FROM label.comment WHERE content REGEXP '^[0-9A-Za-z\\ ]{20}';");
+            ResultSet result = stmt.executeQuery("SELECT content FROM segement;");
             while(result.next()){
                 postList.add(result.getString(1));
             }
