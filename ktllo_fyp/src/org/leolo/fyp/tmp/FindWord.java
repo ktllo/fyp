@@ -31,6 +31,7 @@ public class FindWord {
 
     private void run() throws ClassNotFoundException{
         Queue<String> postList = new LinkedList<String>();
+        //Add extra declaration here
         Vector<Pair> list = new Vector<Pair>();
         try {
             //Make a DB connection and get ALL post seems to be in English
@@ -62,6 +63,7 @@ public class FindWord {
             workspace = srt.getString();
             pointer = perviousPointer = 0;
             while(true){
+                //Start of main working area
                 String word = this.nextWord();
                 if(word == null)
                     break;
@@ -78,6 +80,7 @@ public class FindWord {
                    list.add(p);
                }
                p.matchKey();
+               //End of main working area
             }
         }
         //Pick up the most common words
