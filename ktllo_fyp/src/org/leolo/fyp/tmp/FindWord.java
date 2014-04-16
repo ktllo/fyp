@@ -89,12 +89,12 @@ public class FindWord {
         }
         
         //further classify the keywords to Chinese and English
-        KeywordType type;
+        
         for(int i=0;i<list.size();i++)
         {
             Pair temp = list.get(i);
-            String tmp=temp.toString();
-            type=KeywordType.identify(tmp);
+            String tmp=temp.getKey();
+            KeywordType type=KeywordType.identify(tmp);
             switch(type)
             {
                 case CJK: list_Chi.add(tmp); break;
