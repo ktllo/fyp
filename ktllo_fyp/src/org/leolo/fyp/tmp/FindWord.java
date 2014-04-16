@@ -104,6 +104,19 @@ public class FindWord {
             }
             
         }
+        /* for testing the content of the 2 list
+        for (int k=0;k<list_Eng.size();k++)
+        {
+            System.out.println(list_Eng.get(k));
+        }
+        
+         for (int k=0;k<list_Chi.size();k++)
+        {
+            System.out.println(list_Chi.get(k));
+        }
+                */
+        
+        
         //Pick up the most common words
         Collections.sort(list);
         //Print the result to the console
