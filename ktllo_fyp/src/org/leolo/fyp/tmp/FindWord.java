@@ -33,6 +33,10 @@ public class FindWord {
         Queue<String> postList = new LinkedList<String>();
         //Add extra declaration here
         Vector<Pair> list = new Vector<Pair>();
+        
+        List<String> list_Eng = new ArrayList<String>();
+        List<String> list_Chi = new ArrayList<String>();
+        
         try {
             //Make a DB connection and get ALL post seems to be in English
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -82,6 +86,23 @@ public class FindWord {
                p.matchKey();
                //End of main working area
             }
+        }
+        
+        //further classify the keywords to Chinese and English
+        KeywordType type;
+        for(int i=0;i<list.size();i++)
+        {
+            Pair temp = list.get(i);
+            String tmp=temp.toString();
+            type=KeywordType.identify(tmp);
+            switch(type)
+            {
+                case CJK: list_Chi.add(tmp); break;
+                case LATIN: list_Eng.add(tmp); break;
+                default: System.out.println("ERROR, cannot match KeywordType");
+                         System.exit(1);
+            }
+            
         }
         //Pick up the most common words
         Collections.sort(list);
