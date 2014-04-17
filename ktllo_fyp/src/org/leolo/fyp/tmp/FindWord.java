@@ -71,6 +71,7 @@ public class FindWord {
                 String word = this.nextWord();
                 if(word == null)
                     break;
+                word = word.trim();
                 if(word.length() ==0) continue;
                 Pair p = null;
                 for(int i=0;i<list.size();i++){
@@ -97,7 +98,7 @@ public class FindWord {
             KeywordType type=KeywordType.identify(temp.getKey());
             switch(type)
             {
-                case CJK: list_Chi.add(temp); break;
+                case CJK: if(temp.getKey().length() > 1 )list_Chi.add(temp); break;
                 case LATIN: list_Eng.add(temp); break;
                 default: System.out.println("ERROR, cannot match KeywordType");
                          System.exit(1);
