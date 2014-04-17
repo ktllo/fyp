@@ -14,7 +14,7 @@ public class Keyword {
     String keyword;
     KeywordType type;
 
-    Keyword(String keyword) {
+   public Keyword(String keyword) {
         this.keyword = keyword;
         type = KeywordType.identify(keyword);
         if (type == KeywordType.LATIN) {
