@@ -34,8 +34,8 @@ public class FindWord {
         //Add extra declaration here
         Vector<Pair> list = new Vector<Pair>();
         
-        List<String> list_Eng = new ArrayList<String>();
-        List<String> list_Chi = new ArrayList<String>();
+        List<Pair> list_Eng = new ArrayList<Pair>();
+        List<Pair> list_Chi = new ArrayList<Pair>();
         
         try {
             //Make a DB connection and get ALL post seems to be in English
@@ -93,12 +93,12 @@ public class FindWord {
         for(int i=0;i<list.size();i++)
         {
             Pair temp = list.get(i);
-            String tmp=temp.getKey();
-            KeywordType type=KeywordType.identify(tmp);
+            //String tmp=temp.getKey();
+            KeywordType type=KeywordType.identify(temp.getKey());
             switch(type)
             {
-                case CJK: list_Chi.add(tmp); break;
-                case LATIN: list_Eng.add(tmp); break;
+                case CJK: list_Chi.add(temp); break;
+                case LATIN: list_Eng.add(temp); break;
                 default: System.out.println("ERROR, cannot match KeywordType");
                          System.exit(1);
             }
