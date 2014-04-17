@@ -11,12 +11,14 @@ import java.util.logging.Logger;
 import org.leolo.fyp.util.CharacterType;
 import org.leolo.fyp.util.KeywordType;
 import org.leolo.fyp.util.StopwordRemoverThread;
+import org.leolo.fyp.util.KeywordList;
+import org.leolo.fyp.util.Keyword;
 
 /**
  *
  * @author ktllo
  */
-public class FindWord {
+public class FindWord extends KeywordList{
 
     /**
      * @param args the command line arguments
@@ -120,6 +122,43 @@ public class FindWord {
         //sort the list_Chi and list_Eng
         Collections.sort(list_Chi);
         Collections.sort(list_Eng);
+        
+        //put the top 1/16 items from list_Eng to keyword list
+        int n = list_Eng.size()/16;
+        int r = list_Eng.get(n).getValue();
+        for (int k=0;k<list_Eng.size();k++)
+        {
+            if(list.get(k).getValue() < r) 
+            {
+                continue;
+            }
+            else
+            {
+                
+                System.out.println("Running list_Eng");
+                Keyword temp = new Keyword(list_Eng.get(k).getKey());
+                this.list.add(temp);    
+            }
+        }
+
+        //put the items with value >=100 from list_Chi to keyword list
+        for(int p=0;p<list_Chi.size();p++)
+        {
+            if(list_Chi.get(p).getValue()>=100)
+            {
+//                System.err.println(list_Chi.get(p).getKey());
+                Keyword temp2 = new Keyword(list_Chi.get(p).getKey());
+//                if(temp2 == null){
+//                    throw new RuntimeException();
+//                }
+                this.list.add(temp2);
+            }
+            else
+            {
+                break;
+            }
+        }
+        
         
         
         //Pick up the most common words

@@ -30,6 +30,11 @@ import java.util.logging.Logger;
 public class KeywordList {
     protected ArrayList<Keyword> list;
     
+    public KeywordList()
+    {
+        list = new ArrayList<>();
+    }
+    
     /*
      * Parse the keyword list, one keyword on one line.
      */
