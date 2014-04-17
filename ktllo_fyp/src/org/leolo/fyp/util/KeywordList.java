@@ -79,15 +79,3 @@ public class KeywordList {
     
 }
 
-class Keyword{
-    String keyword;
-    KeywordType type;
-    
-    Keyword(String keyword){
-        this.keyword = keyword;
-        type = KeywordType.identify(keyword);
-        if(type == KeywordType.LATIN){
-            this.keyword = this.keyword.toLowerCase(Locale.ENGLISH);
-        }
-    }
-}
