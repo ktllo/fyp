@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  * @author leolo
  */
 public class KeywordList {
-    private ArrayList<Keyword> list;
+    protected ArrayList<Keyword> list;
     
     /*
      * Parse the keyword list, one keyword on one line.
