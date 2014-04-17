@@ -116,9 +116,13 @@ public class FindWord {
         }
                 */
         
+        //sort the list_Chi and list_Eng
+        Collections.sort(list_Chi);
+        Collections.sort(list_Eng);
+        
         
         //Pick up the most common words
-        Collections.sort(list);
+        //Collections.sort(list);
         //Print the result to the console
         int threshold = list.get(list.size()/16).getValue();
         for(int i=0;i<list.size();i++){
