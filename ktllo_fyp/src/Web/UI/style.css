@@ -1,0 +1,104 @@
+@charset "utf-8";
+body {
+	background-color: #278092;
+	margin: 0px;
+}
+/* CSS Document */
+
+#wrapper {
+	width: 900px;   
+	margin: auto;   
+	border: 2px solid #DEECDF;
+	font-family: "微軟正黑體", Arial;
+        }
+
+#header {
+	background-image: url(Spring_warm_rain_-_computer_background_photos.jpg);
+	background-repeat: no-repeat;
+	padding-top: 20px;
+	padding-bottom: 30px;
+	padding-left: 30px;
+        }
+
+#button {
+	
+	height: 22px;
+	font-weight: bolder;
+	color: #FFF;
+	font-size: 14px;
+    background-color:#6E6E6E;
+	margin: 0px;
+	padding:0px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+        }
+		
+#button li {
+    float:left;
+    width:178px;
+    list-style-type:none;
+    background-color:#6E6E6E;
+    text-align:center;
+	letter-spacing: 2px;
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #FFF;
+    margin-right:1px;
+
+}
+		
+#button li a {
+	 
+    display: block;
+	width: 180px;
+	height:20px;
+	
+	padding-top:2px;
+	color: #FFF;
+	text-decoration: none;
+}
+
+#button li a:hover{
+	
+	
+	background-color:#39919F
+}
+
+
+#content {
+	padding: 30px;
+	font-size: 14px;
+	line-height: 2em;
+	color: #666;
+	background-color: #D1DCCE;
+
+                }
+
+
+#footer {
+	background-image: url(Spring_warm_rain_-_computer_background_photos.jpg);
+	background-repeat: no-repeat;
+	font-size: 12px;
+	line-height: 1.5em;
+	color: #FFF;
+	padding: 20px;
+
+
+         }
+		 
+h1{
+	color: #FFF;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size: 30px;
+	margin: 0px;	
+}
+
+
+
+.header-text {
+	font-size: 15px;
+	color: #D2EFF7;
+	font-family: "Times New Roman", Times, serif;
+	font-weight: bolder;
+	font-style: italic;
+	margin: 0px;
+}
