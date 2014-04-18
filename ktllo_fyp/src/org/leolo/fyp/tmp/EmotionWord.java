@@ -28,13 +28,13 @@ public class EmotionWord {
             Logger.getLogger(FindWord.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+       public Vector<Pair> vb = new Vector<Pair>();
+       public Vector<Pair> b = new Vector<Pair>();
+       public Vector<Pair> n = new Vector<Pair>();
+       public Vector<Pair> g = new Vector<Pair>();
+       public Vector<Pair> vg = new Vector<Pair>();
     private void run() throws ClassNotFoundException{
-        Vector<Pair> vb = new Vector<Pair>();
-        Vector<Pair> b = new Vector<Pair>();
-        Vector<Pair> n = new Vector<Pair>();
-        Vector<Pair> g = new Vector<Pair>();
-        Vector<Pair> vg = new Vector<Pair>();
+
         
         try {
             //Make a DB connection and get ALL post seems to be in English
@@ -125,7 +125,19 @@ public class EmotionWord {
         remove(b,removePending);
         remove(g,removePending);
         remove(vg,removePending);
-        
+        try{
+            java.io.PrintWriter out = new java.io.PrintWriter("vbad");
+            for(int i=0;i<vb.size();i++)
+                out.println(vb.get(i).getKey());
+            out.flush();
+            out = new java.io.PrintWriter("bad");
+            for(int i=0;i<b.size();i++)
+                out.println(b.get(i).getKey());
+            out.flush();
+        }catch(Exception e){
+            e.printStackTrace();
+            System.exit(1);
+        }
         System.out.println();
     }
     

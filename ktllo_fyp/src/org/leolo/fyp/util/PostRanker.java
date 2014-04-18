@@ -21,6 +21,8 @@ public class PostRanker implements WordCounterUser{
     private int kwsReturned = 0;
     private int kwsValue = 0;
     private int wctValue = -1;
+    private int emoPoint = Integer.MIN_VALUE;
+    private int emoCount = -1;
     private Exception ex = null;
     private StopwordRemoverResult dataWithoutStopword=null;
     
@@ -45,6 +47,8 @@ public class PostRanker implements WordCounterUser{
         kwsValue = 0;
         wctValue = -1;
         dataWithoutStopword=null;
+        this.emoCount = -1;
+        this.emoPoint = Integer.MIN_VALUE;
         //Create Keyword Match Threads
         int[] breakPoint = new int[THREAD_COUNT + 1];
         for (int i = 0; i <= THREAD_COUNT; i++) {
@@ -71,7 +75,7 @@ public class PostRanker implements WordCounterUser{
     //To make the things more clear.
     private void waitForResult() throws Exception{
         while(true){
-            if(kwsReturned == THREAD_COUNT && wctValue > 0 && dataWithoutStopword != null){
+            if(kwsReturned == THREAD_COUNT && wctValue > 0 && dataWithoutStopword != null && this.emoCount > 0 && this.emoPoint > Integer.MIN_VALUE){
                 break;
             }
             if(ex != null){
@@ -123,6 +127,14 @@ public class PostRanker implements WordCounterUser{
     
     void swrtReport(StopwordRemoverResult swrr){
         this.dataWithoutStopword = swrr;
+    }
+    
+    void emoReport(int point,int count){
+        this.emoCount = count;
+        this.emoPoint = point;
+        synchronized(this){
+            this.notify();
+        }
     }
     
     /**
