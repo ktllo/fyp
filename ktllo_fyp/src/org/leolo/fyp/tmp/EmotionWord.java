@@ -100,8 +100,58 @@ public class EmotionWord {
         Collections.sort(g);
         Collections.sort(vg);
         
+        //Merge the list
+        Vector<Pair> bad = new Vector<>();
+        Vector<Pair> good = new Vector<>();
+        
+        //Put vb & b into bad & g & vg into good
+        bad.addAll(vb);
+        bad.addAll(b);
+        good.addAll(g);
+        good.addAll(vg);
+        elimDup(bad);
+        elimDup(good);
+        //Remove word in both bucket set
+        ArrayList<String> removePending = new ArrayList<>();
+        for(int i=0;i<bad.size();i++){
+            String target = bad.get(i).getKey();
+            for(int j=0;j<good.size();j++){
+                if(target.equalsIgnoreCase(good.get(j).getKey())){
+                    removePending.add(target);
+                }
+            }
+        }
+        remove(vb,removePending);
+        remove(b,removePending);
+        remove(g,removePending);
+        remove(vg,removePending);
+        
         System.out.println();
     }
+    
+    private void remove(List<Pair> list,List<String> target){
+        for(int i=0;i<target.size();i++){
+            for(int j=0;j<list.size();j++){
+                if(target.get(i).equalsIgnoreCase(list.get(j).getKey())){
+                    list.remove(j);
+                    break;
+                }
+            }
+        }
+    }
+    
+    private void elimDup(Vector<Pair> data){
+        for(int i=0;i<data.size();i++){
+            String target = data.get(i).getKey();
+            for(int j=i+1;j<data.size();j++){
+                if(target.equalsIgnoreCase(data.get(j).getKey())){
+                    data.remove(j);
+                    break;
+                }
+            }
+        }
+    }
+    
     private int pointer = 0;//Next character to be scan
     private String workspace;
     private int perviousPointer = 0;//First character of current word
