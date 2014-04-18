@@ -257,33 +257,3 @@ public class FindWord extends KeywordList {
     }
 }
 
-class Pair implements java.lang.Comparable<Pair> {
-
-    private String key;
-    private int value = 0;
-
-    public Pair(String key) {
-        this.key = key;
-    }
-
-    public void matchKey() {
-        value++;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public boolean isMatch(String target) {
-        return key.equalsIgnoreCase(target);
-    }
-
-    @Override
-    public int compareTo(Pair t) {
-        return Integer.compare(t.value, value);
-    }
-
-    public String getKey() {
-        return this.key;
-    }
-}
