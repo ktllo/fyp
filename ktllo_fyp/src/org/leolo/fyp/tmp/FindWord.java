@@ -18,7 +18,7 @@ import org.leolo.fyp.util.Keyword;
  *
  * @author ktllo
  */
-public class FindWord extends KeywordList{
+public class FindWord extends KeywordList {
 
     /**
      * @param args the command line arguments
@@ -31,14 +31,14 @@ public class FindWord extends KeywordList{
         }
     }
 
-    private void run() throws ClassNotFoundException{
+    private void run() throws ClassNotFoundException {
         Queue<String> postList = new LinkedList<String>();
         //Add extra declaration here
         Vector<Pair> list = new Vector<Pair>();
-        
+
         List<Pair> list_Eng = new ArrayList<Pair>();
         List<Pair> list_Chi = new ArrayList<Pair>();
-        
+
         try {
             //Make a DB connection and get ALL post seems to be in English
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -49,125 +49,149 @@ public class FindWord extends KeywordList{
             ex.printStackTrace();
             System.exit(1);
         }
-        try{
+        try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://home.leolo.org/label", "label", "label");
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT content FROM segement;");
-            while(result.next()){
+            while (result.next()) {
                 postList.add(result.getString(1));
             }
             conn.close();
-        } catch(SQLException sqle){
+        } catch (SQLException sqle) {
             sqle.printStackTrace();
             System.exit(1);
         }
-        
-        while(!postList.isEmpty()){
+
+        while (!postList.isEmpty()) {
             workspace = postList.remove();
-            StopwordRemoverThread srt = new StopwordRemoverThread(null,workspace);
+            StopwordRemoverThread srt = new StopwordRemoverThread(null, workspace);
             srt.removeStopword();
             workspace = srt.getString();
             pointer = perviousPointer = 0;
-            while(true){
+            while (true) {
                 //Start of main working area
                 String word = this.nextWord();
-                if(word == null)
+                if (word == null) {
                     break;
+                }
                 word = word.trim();
-                if(word.length() ==0) continue;
+                if (word.length() == 0) {
+                    continue;
+                }
                 Pair p = null;
-                for(int i=0;i<list.size();i++){
-                    if(list.get(i).isMatch(word)){
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).isMatch(word)) {
                         p = list.get(i);
                         break;
                     }
                 }
-               if( p == null ){
-                   p = new Pair(word);
-                   list.add(p);
-               }
-               p.matchKey();
-               //End of main working area
-            }
-        }
-        
-        //further classify the keywords to Chinese and English
-        
-        for(int i=0;i<list.size();i++)
-        {
-            Pair temp = list.get(i);
-            //String tmp=temp.getKey();
-            KeywordType type=KeywordType.identify(temp.getKey());
-            switch(type)
-            {
-                case CJK: if(temp.getKey().length() > 1 )list_Chi.add(temp); break;
-                case LATIN: list_Eng.add(temp); break;
-                default: System.out.println("ERROR, cannot match KeywordType");
-                         System.exit(1);
-            }
-            
-        }
-        /* for testing the content of the 2 list
-        for (int k=0;k<list_Eng.size();k++)
-        {
-            System.out.println(list_Eng.get(k));
-        }
-        
-         for (int k=0;k<list_Chi.size();k++)
-        {
-            System.out.println(list_Chi.get(k));
-        }
-                */
-        
-        //sort the list_Chi and list_Eng
-        Collections.sort(list_Chi);
-        Collections.sort(list_Eng);
-        
-        //put the top 1/16 items from list_Eng to keyword list
-        int n = list_Eng.size()/16;
-        int r = list_Eng.get(n).getValue();
-        for (int k=0;k<list_Eng.size();k++)
-        {
-            if(list.get(k).getValue() < r) 
-            {
-                continue;
-            }
-            else
-            {
-                
-                System.out.println("Running list_Eng");
-                Keyword temp = new Keyword(list_Eng.get(k).getKey());
-                this.list.add(temp);    
+                if (p == null) {
+                    p = new Pair(word);
+                    list.add(p);
+                }
+                p.matchKey();
+                //End of main working area
             }
         }
 
-        //put the items with value >=100 from list_Chi to keyword list
-        for(int p=0;p<list_Chi.size();p++)
-        {
-            if(list_Chi.get(p).getValue()>=100)
-            {
+        //further classify the keywords to Chinese and English
+
+        for (int i = 0; i < list.size(); i++) {
+            Pair temp = list.get(i);
+            //String tmp=temp.getKey();
+            KeywordType type = KeywordType.identify(temp.getKey());
+            switch (type) {
+                case CJK:
+                    if (temp.getKey().length() > 1) {
+                        list_Chi.add(temp);
+                    }
+                    break;
+                case LATIN:
+                    list_Eng.add(temp);
+                    break;
+                default:
+                    System.out.println("ERROR, cannot match KeywordType");
+                    System.exit(1);
+            }
+
+        }
+        /* for testing the content of the 2 list
+         for (int k=0;k<list_Eng.size();k++)
+         {
+         System.out.println(list_Eng.get(k));
+         }
+        
+         for (int k=0;k<list_Chi.size();k++)
+         {
+         System.out.println(list_Chi.get(k));
+         }
+         */
+
+        //sort the list_Chi and list_Eng
+        Collections.sort(list_Chi);
+        Collections.sort(list_Eng);
+        int ecutoff[] = {8, 16, 32, 64};
+        int ccutoff[] = {50, 75, 100, 125};
+        for (int ec = 0; ec < 4; ec++) {
+            for (int cc = 0; cc < 4; cc++) {
+                int engc = 0;
+                int chic = 0;
+                //put the top 1/16 items from list_Eng to keyword list
+                int n = list_Eng.size() / ecutoff[ec];
+                int r = list_Eng.get(n).getValue();
+                for (int k = 0; k < list_Eng.size(); k++) {
+                    if (list.get(k).getValue() < r) {
+                        continue;
+                    } else {
+
+                        System.out.println("Running list_Eng");
+                        Keyword temp = new Keyword(list_Eng.get(k).getKey());
+                        this.list.add(temp);
+                        engc++;
+                    }
+                }
+
+                //put the items with value >=100 from list_Chi to keyword list
+                for (int p = 0; p < list_Chi.size(); p++) {
+                    if (list_Chi.get(p).getValue() >= ccutoff[cc]) {
 //                System.err.println(list_Chi.get(p).getKey());
-                Keyword temp2 = new Keyword(list_Chi.get(p).getKey());
+                        Keyword temp2 = new Keyword(list_Chi.get(p).getKey());
 //                if(temp2 == null){
 //                    throw new RuntimeException();
 //                }
-                this.list.add(temp2);
-            }
-            else
-            {
-                break;
+                        this.list.add(temp2);
+                        chic++;
+                    } else {
+                        break;
+                    }
+                }
+                //Write them into file
+                try{
+                java.io.PrintWriter out = new java.io.PrintWriter("Output"+ec+"_"+cc+".txt");
+                out.println("English : "+engc);
+                out.println("Chinese : "+chic);
+                out.println("Total   : "+(engc+chic));
+                out.println("Diff    : "+Math.abs(engc-chic));
+                for(int i=0;i<this.list.size();i++)
+                    out.println(this.list.get(i));
+                out.flush();
+                out.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                    System.exit(0);
+                }
             }
         }
-        
-        
-        
+
         //Pick up the most common words
         //Collections.sort(list);
         //Print the result to the console
-        int threshold = list.get(list.size()/16).getValue();
-        for(int i=0;i<list.size();i++){
-            if(list.get(i).getValue() < threshold) break;
-            System.out.println(""+i+":Count="+list.get(i).getValue()+";word="+list.get(i).getKey());
+        int threshold = list.get(list.size() / 16).getValue();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getValue() < threshold) {
+                break;
+            }
+            System.out.println("" + i + ":Count=" + list.get(i).getValue() + ";word=" + list.get(i).getKey());
         }
         System.out.println(list.size());
     }
@@ -183,7 +207,9 @@ public class FindWord extends KeywordList{
         boolean wordFormed = false;
         CharacterType type = null;
         do {
-            if(pointer >= workspace.length() ) return null;
+            if (pointer >= workspace.length()) {
+                return null;
+            }
             char currentChar = workspace.charAt(pointer);
             type = CharacterType.identify(currentChar);
             switch (type) {
@@ -225,7 +251,7 @@ public class FindWord extends KeywordList{
     }
 }
 
-class Pair implements java.lang.Comparable<Pair>{
+class Pair implements java.lang.Comparable<Pair> {
 
     private String key;
     private int value = 0;
@@ -250,8 +276,8 @@ class Pair implements java.lang.Comparable<Pair>{
     public int compareTo(Pair t) {
         return Integer.compare(t.value, value);
     }
-   
-    public String getKey(){
+
+    public String getKey() {
         return this.key;
     }
 }
