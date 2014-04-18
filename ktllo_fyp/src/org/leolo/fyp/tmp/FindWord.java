@@ -11,9 +11,7 @@ import java.util.logging.Logger;
 import org.leolo.fyp.util.CharacterType;
 import org.leolo.fyp.util.KeywordType;
 import org.leolo.fyp.util.StopwordRemoverThread;
-import org.leolo.fyp.util.KeywordList;
-import org.leolo.fyp.util.Keyword;
-
+import org.leolo.fyp.util.*;
 /**
  *
  * @author ktllo
@@ -130,63 +128,71 @@ public class FindWord extends KeywordList {
         //sort the list_Chi and list_Eng
         Collections.sort(list_Chi);
         Collections.sort(list_Eng);
-        int ecutoff[] = {8, 16, 32, 64};
-        int ccutoff[] = {50, 75, 100, 125};
-        for (int ec = 0; ec < 4; ec++) {
-            for (int cc = 0; cc < 4; cc++) {
-                int engc = 0;
-                int chic = 0;
-                //put the top 1/16 items from list_Eng to keyword list
-                int n = list_Eng.size() / ecutoff[ec];
+//        int ecutoff[] = {8, 16, 32, 64};
+//        int ccutoff[] = {50, 75, 100, 125};
+//        for (int ec = 0; ec < 4; ec++) {
+//            for (int cc = 0; cc < 4; cc++) {
+//                int engc = 0;
+//                int chic = 0;
+//                //put the top 1/16 items from list_Eng to keyword list
+                int n = list_Eng.size() / 64;
                 int r = list_Eng.get(n).getValue();
-                for (int k = 0; k < list_Eng.size(); k++) {
+                for (int k = 0; k < list_Eng.size(); k++) 
+                {
                     if (list.get(k).getValue() < r) {
                         continue;
-                    } else {
-
-                        System.out.println("Running list_Eng");
+                    } 
+                    else 
+                    {
+                           // break;
+//                        System.out.println("Running list_Eng");
                         Keyword temp = new Keyword(list_Eng.get(k).getKey());
                         this.list.add(temp);
-                        engc++;
+//                        engc++;
                     }
                 }
 
                 //put the items with value >=100 from list_Chi to keyword list
                 for (int p = 0; p < list_Chi.size(); p++) {
-                    if (list_Chi.get(p).getValue() >= ccutoff[cc]) {
+                    if (list_Chi.get(p).getValue() >=50) 
+                    {
 //                System.err.println(list_Chi.get(p).getKey());
-                        Keyword temp2 = new Keyword(list_Chi.get(p).getKey());
+                        
 //                if(temp2 == null){
 //                    throw new RuntimeException();
 //                }
+                        Keyword temp2 = new Keyword(list_Chi.get(p).getKey());
                         this.list.add(temp2);
-                        chic++;
-                    } else {
+//                        chic++;
+                    }
+                    
+                    else
+                    {
                         break;
                     }
                 }
-                //Write them into file
-                try{
-                java.io.PrintWriter out = new java.io.PrintWriter("Output"+ec+"_"+cc+".txt");
-                out.println("English : "+engc);
-                out.println("Chinese : "+chic);
-                out.println("Total   : "+(engc+chic));
-                out.println("Diff    : "+Math.abs(engc-chic));
-                for(int i=0;i<this.list.size();i++)
-                    out.println(this.list.get(i));
-                out.flush();
-                out.close();
-                }catch(Exception e){
-                    e.printStackTrace();
-                    System.exit(0);
-                }
-            }
-        }
+//                //Write them into file
+//                try{
+//                java.io.PrintWriter out = new java.io.PrintWriter("Output"+ec+"_"+cc+".txt");
+//                out.println("English : "+engc);
+//                out.println("Chinese : "+chic);
+//                out.println("Total   : "+(engc+chic));
+//                out.println("Diff    : "+Math.abs(engc-chic));
+//                for(int i=0;i<this.list.size();i++)
+//                    out.println(this.list.get(i));
+//                out.flush();
+//                out.close();
+//                }catch(Exception e){
+//                    e.printStackTrace();
+//                    System.exit(0);
+//                }
+            
+        
 
         //Pick up the most common words
         //Collections.sort(list);
         //Print the result to the console
-        int threshold = list.get(list.size() / 16).getValue();
+                                                                                                                                                                                                                                                                                                                                                                                                        int threshold = list.get(list.size() / 16).getValue();
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getValue() < threshold) {
                 break;
