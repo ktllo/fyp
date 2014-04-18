@@ -21,5 +21,9 @@ public class Keyword {
             this.keyword = this.keyword.toLowerCase(Locale.ENGLISH);
         }
     }
+   
+   public String toString(){
+       return keyword;
+   }
     
 }
