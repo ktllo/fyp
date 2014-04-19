@@ -138,7 +138,9 @@ public class EmotionWordList{
 "relax",
 "perfect",
 "鹹香",
-"yummy"
+"yummy",
+"好食",
+"香口"
 
  };
  
