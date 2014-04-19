@@ -8,6 +8,10 @@ package org.leolo.fyp.tmp;
  *
  * @author leolo
  */
-public class EmotionWordList extends EmotionWord {
+public class EmotionWordList{
+    public static String [] vb;
+    public static String [] b;
+    public static String [] g;
+    public static String [] vg;
     
 }
