@@ -39,6 +39,17 @@ public class FileCombiner {
                     ll.remove(j);
             }
         }
+        
+        PrintWriter out = new PrintWriter("vbad_result.txt");
+        for(int i=0;i<el.size();i++)
+            out.println("\""+el.get(i)+"\",");
+        out.flush();
+        out.close();
+        out = new PrintWriter("bad_result.txt");
+        for(int i=0;i<ll.size();i++)
+            out.println("\""+ll.get(i)+"\",");
+        out.flush();
+        out.close();
         System.out.println();
     }
     

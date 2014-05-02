@@ -50,6 +50,32 @@ public class RankingResult {
         return this.totalPoint;
     }
             
-                
-            
+    public int getEQ(){
+        return (int)((((double)this.emotionPoint)*50)/this.emotionWord);
+    }      
+    
+    public String getTotalClass(){
+        if(totalPoint > 6000 )
+            return "vg";
+        if(totalPoint > 3000 )
+            return "g";
+        if(totalPoint > 1200 )
+            return "n";
+        if(totalPoint > 800 )
+            return "b";
+        return "vb";
+    }
+    
+    public String getEmotionClass(){
+        int eq = this.getEQ();
+        if( eq > 60 )
+            return "vg";
+        if( eq > 20 )
+            return "g";
+        if( eq > -20 )
+            return "n";
+        if( eq > -60 )
+            return "b";
+        return "vb";
+    }
 }

@@ -29,7 +29,7 @@ public class FindWord extends KeywordList {
         }
     }
 
-    private void run() throws ClassNotFoundException {
+    public void run() throws ClassNotFoundException {
         Queue<String> postList = new LinkedList<String>();
         //Add extra declaration here
         Vector<Pair> list = new Vector<Pair>();
@@ -48,7 +48,7 @@ public class FindWord extends KeywordList {
             System.exit(1);
         }
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://home.leolo.org/label", "label", "label");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/label", "root", "rootpass");
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT content FROM segement;");
             while (result.next()) {

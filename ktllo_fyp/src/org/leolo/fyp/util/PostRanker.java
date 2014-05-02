@@ -35,13 +35,17 @@ public class PostRanker implements WordCounterUser{
         this.keywords = new KeywordList(keywords);
     }
     
+    public PostRanker(KeywordList keyword){
+        this.keywords = keyword;
+    }
+    
     /**
      * Rank the post according to the data it carry.
      * @param data A String carry the post to be ranked
      * @return Rank of the post, higher the number is, more information it carry
      * @throws Exception 
      */
-    public int rank(String data) throws Exception {
+    public RankingResult rank(String data) throws Exception {
         //Expan HTML entities(e.g. &nbsp;)
         kwsReturned = 0;
         kwsValue = 0;
@@ -56,34 +60,39 @@ public class PostRanker implements WordCounterUser{
         }
         for (int i = 0; i < THREAD_COUNT; i++) {
             KeywordSearcher ks = new KeywordSearcher(this, data, breakPoint[i], breakPoint[i + 1]);
-            ks.start();
+            ks.run();
         }
         WordCountThread wct = new WordCountThread(this, data);
-        wct.start();
+        wct.run();
         StopwordRemoverThread swrt = new StopwordRemoverThread(this,data);
-        swrt.start();
-        waitForResult();
+        swrt.run();
+        new EmotionWordCounter(this,data).run();
+        
+        //waitForResult();
         int adjust = 0;
         if(kwsValue != 0) {
             if((wctValue/kwsValue)<20){
                 adjust = kwsValue * -23;
             }
         }
-        return this.kwsValue * 250 + this.wctValue + adjust + 10 * this.dataWithoutStopword.getWordCount();
+        return new RankingResult(kwsValue,this.emoCount,this.wctValue,this.dataWithoutStopword.getWordCount(),this.emoPoint);
     }
     
     //To make the things more clear.
     private void waitForResult() throws Exception{
         while(true){
-            if(kwsReturned == THREAD_COUNT && wctValue > 0 && dataWithoutStopword != null && this.emoCount > 0 && this.emoPoint > Integer.MIN_VALUE){
+            System.out.println(""+Math.round(Math.random()*1000)+"PostRanker been notified!");
+            System.out.println(""+kwsReturned+";"+wctValue+";"+dataWithoutStopword==null+";"+this.emoCount);
+            if(kwsReturned == THREAD_COUNT && wctValue > 0 && dataWithoutStopword != null && (this.emoCount >= 0 || this.emoPoint > Integer.MIN_VALUE)){
                 break;
             }
             if(ex != null){
                 throw ex;
             }
-            synchronized(this){
-                this.wait();
-            }
+            //synchronized(this){
+            //    this.wait(1000);
+            //}
+            Thread.sleep(750);
         }
         
     }
@@ -104,7 +113,8 @@ public class PostRanker implements WordCounterUser{
             sb.append(line).append('\n');
             line = br.readLine();
         }
-        return this.rank(sb.toString());
+        return 0;
+        //return this.rank(sb.toString());
     }
     
     /**

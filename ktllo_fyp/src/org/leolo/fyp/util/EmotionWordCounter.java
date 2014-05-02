@@ -30,6 +30,9 @@ public class EmotionWordCounter extends Thread{
         checkList(org.leolo.fyp.tmp.EmotionWordList.g,1);
         checkList(org.leolo.fyp.tmp.EmotionWordList.vg,2);
         this.ranker.emoReport(point, count);
+        synchronized(ranker){
+            ranker.notify();
+        }
     }
     
     public void checkList(String [] list, int point){
